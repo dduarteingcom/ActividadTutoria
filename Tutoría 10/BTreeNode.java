@@ -5,8 +5,8 @@ public class BTreeNode {
     boolean isLeaf;
 
     BTreeNode(int order, boolean leaf) {
-        this.keys     = new int[order-1];
-        this.branches = new BTreeNode[order];
+        this.keys     = new int[order];
+        this.branches = new BTreeNode[order+ 1];
         this.keyCount = 0;
         this.isLeaf   = leaf;
     }

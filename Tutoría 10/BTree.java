@@ -130,45 +130,4 @@ class BTree {
     }
 
     private static String id(BTreeNode n) { return "n" + System.identityHashCode(n); }
-
-
-
- //-------------------------Eliminación-------------------------//
-public void delete(int key) {
-    deleteRecursive(root, key);
-
-}
-
-private void deleteRecursive(BTreeNode node, int key) {
-    int idx = findKeyIndex(node, key);
-
-    if (idx < node.keyCount && node.keys[idx] == key) {
-        if (node.isLeaf)           deleteFromLeaf(node, idx);        // Casos 1-3
-        else                       deleteFromInternal(node, idx);    // Casos 4-5
-    } else { // la clave está en un subárbol
-        if (node.isLeaf) return;  // no existe
-        ensureMinBeforeDescend(node, idx);      // Casos 2-3
-        deleteRecursive(node.branches[idx], key);
-    }
-}
-
-private void deleteFromLeaf(BTreeNode leaf, int idx) { /* caso 1 */ }
-
-private void deleteFromInternal(BTreeNode node, int idx) {
-    /* elegir predecesor o sucesor;
-       manejar casos 4 y 5 según keyCount de hijos */
-}
-
-/* ========== helpers de reparación ========== */
-private void ensureMinBeforeDescend(BTreeNode parent, int childIdx) {
-    /* decide si se hace borrowLeft, borrowRight o mergeWithSibling */
-}
-
-private void borrowLeft(BTreeNode parent, int childIdx) { /* caso 2 */ }
-private void borrowRight(BTreeNode parent, int childIdx) { /* caso 2 */ }
-
-private void mergeWithSibling(BTreeNode parent, int idx) { /* caso 3 */ }
-
-private int findKeyIndex(BTreeNode node, int key) { return 0;}
-
 }
