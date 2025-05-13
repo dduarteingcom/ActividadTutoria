@@ -130,4 +130,73 @@ class BTree {
     }
 
     private static String id(BTreeNode n) { return "n" + System.identityHashCode(n); }
+    public void delete(int key) { deleteRecursive(root, key); }
+
+    private void deleteRecursive(BTreeNode node, int key) {
+        int idx = findKeyIndex(node, key);
+
+        if (idx < node.keyCount && node.keys[idx] == key) {
+            if (node.isLeaf)
+                deleteFromLeaf(node, idx);          // Casos 1–3
+            else
+                deleteFromInternal(node, idx);      // Casos 4–5
+        } else {
+            if (node.isLeaf) return;                // clave no existe
+            ensureMinBeforeDescend(node, idx);      // Casos 2–3
+            deleteRecursive(node.branches[idx], key);
+        }
+    }
+
+    /* ---------- Caso 1  (y punto de entrada a 2–3) ---------- */
+
+        /**
+     * Elimina la llave en posición idx de un nodo HOJA.
+     *
+     * Casos a considerar:
+     * 1) El nodo sigue con > mín   → borrar y compactar.
+     * 2) El nodo queda con mín     → quizá pedir prestado a hermano.
+     * 3) El nodo queda < mín       → fusión con hermano + llave del padre.
+     *
+     * Implementar la lógica según el caso.
+     */
+    private void deleteFromLeaf(BTreeNode leaf, int idx) {
+
+        
+    }
+
+    /* ---------- Casos 4-5 (nodo interno) ---------- */
+    private void deleteFromInternal(BTreeNode node, int idx) {
+        // TODO:
+        // 1) Si hijo izquierdo tiene > mín, elegir predecesor y borrarlo en subárbol izquierdo.
+        // 2) else si hijo derecho tiene > mín, usar sucesor.
+        // 3) else, fusionar hijos y luego continuar borrando en el hijo fusionado.
+    }
+
+    /* ---------- Garantizar mínimo antes de descender (casos 2-3) ---------- */
+    private void ensureMinBeforeDescend(BTreeNode parent, int childIdx) {
+        // Si child tiene ≥ mín, nada.
+        // else intentar borrowLeft, borrowRight, o mergeWithSibling.
+        // TODO: implementar lógica de reparación.
+    }
+
+    /* ---------- Rotaciones (caso 2) ---------- */
+    private void borrowLeft(BTreeNode parent, int childIdx) {
+        // TODO: mover una llave del hermano izquierdo al hijo.
+    }
+    private void borrowRight(BTreeNode parent, int childIdx) {
+        // TODO: mover una llave del hermano derecho al hijo.
+    }
+
+    /* ---------- Fusión (caso 3) ---------- */
+    private void mergeWithSibling(BTreeNode parent, int idx) {
+        // TODO: unir child y su hermano adyacente + llave del padre.
+    }
+
+    /* ---------- Utilitario ---------- */
+    private int findKeyIndex(BTreeNode node, int key) {
+        int i = 0;
+        while (i < node.keyCount && key > node.keys[i]) i++;
+        return i;                                // primera posición ≥ key
+    }
 }
+
